@@ -1,0 +1,16 @@
+name: deploy-census-classification
+channels:
+  - menpo
+  - conda-forge
+  - defaults
+dependencies:
+  - jupyterlab
+  - python=3.8
+  - numpy
+  - scikit-learn
+  - jupyter
+  - pytest
+  - pandas
+  - uvicorn
+  - fastapi
+prefix: /opt/anaconda3/envs/deploy-census-classification
