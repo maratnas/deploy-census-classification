@@ -1,5 +1,6 @@
 dvc==2.25.0
 dvc[s3]
+dvc[gdrive]
 pytest
 flake8
 numpy
