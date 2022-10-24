@@ -5,7 +5,7 @@ pytest
 flake8
 numpy
 pandas
-scikit-learn==1.1.2
+scikit-learn==1.0.2
 requests
 fastapi==0.85.0
 uvicorn
