@@ -8,6 +8,18 @@ import pandas as pd
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 
+CATEGORICAL_FEATURES = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country",
+]
+
+
 def process_data(
     X: pd.DataFrame,
     categorical_features: List[str] = [],

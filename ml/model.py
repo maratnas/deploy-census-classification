@@ -1,8 +1,13 @@
+from typing import Tuple
+
 import numpy as np
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 
 
-def train_model(X_train: np.ndarray, y_train: np.ndarray):
+def train_model(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+):
     """
     Trains a machine learning model and returns it.
 
@@ -13,11 +18,14 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray):
     Returns:
         model: Trained machine learning model.
     """
+    # TODO: Fix this.
+    return [0, 1, 2]  # Placeholder.
 
-    pass
 
-
-def compute_model_metrics(y: np.ndarray, preds: np.ndarray):
+def compute_model_metrics(
+    y: np.ndarray,
+    preds: np.ndarray,
+) -> Tuple[float, float, float]:
     """
     Validates the trained machine learning model using precision, recall, and
     F1.
@@ -37,7 +45,10 @@ def compute_model_metrics(y: np.ndarray, preds: np.ndarray):
     return precision, recall, fbeta
 
 
-def infer(model, X: np.ndarray):
+def infer(
+    model,
+    X: np.ndarray,
+):
     """
     Run model inferences and return the predictions.
 
