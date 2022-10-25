@@ -11,13 +11,23 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
-from ml.data import CATEGORICAL_FEATURES, process_data
+from ml.data import process_data
 from ml.model import train_model, infer, compute_model_metrics
 
 
-LABEL = "salary"
 DATA_FILE_PATH = r"./data/census-clean.csv"
 MODEL_FILE_PATH = r"./models/model.pkl"
+LABEL = "salary"
+CATEGORICAL_FEATURES = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country",
+]
 
 
 def main() -> None:
@@ -49,7 +59,7 @@ def main() -> None:
     model: RandomForestClassifier = train_model(X_train, y_train)
 
     # Save model.
-    # TODO: Save also `encoder` and `label_binarizer`.
+    # TODO: Save also `encoder` and `label_binarizer`?
     with open(MODEL_FILE_PATH, 'wb') as fout:
         pickle.dump(model, fout)
 

@@ -1,23 +1,11 @@
 """
 Data manipulation utilities.
 """
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
-
-
-CATEGORICAL_FEATURES = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-]
 
 
 def process_data(
@@ -27,11 +15,16 @@ def process_data(
     training: bool = True,
     encoder: Optional[OneHotEncoder] = None,
     label_binarizer: Optional[LabelBinarizer]=None,
-):
+) -> Tuple[
+    np.ndarray,
+    np.ndarray,
+    Optional[OneHotEncoder],
+    Optional[LabelBinarizer],
+]:
     """
     Process the data used in the machine learning pipeline.
 
-    Processes the data using one hot encoding for the categorical features and a
+    Processes the data using one-hot encoding for the categorical features and a
     label binarizer for the labels. This can be used in either training or
     inference/validation.
 
@@ -53,8 +46,8 @@ def process_data(
         encoder: sklearn.preprocessing._encoders.OneHotEncoder, Trained sklearn
             OneHotEncoder, only used if training=False.
 
-        label_binarizer: sklearn.preprocessing._label.LabelBinarizer, Trained sklearn
-            LabelBinarizer, only used if training=False.
+        label_binarizer: sklearn.preprocessing._label.LabelBinarizer, Trained
+            sklearn LabelBinarizer, only used if training=False.
 
     Returns:
         X : np.ndarray, Processed data.
@@ -62,12 +55,13 @@ def process_data(
         y : np.ndarray, Processed labels if labeled=True, otherwise empty
             np.ndarray.
 
-        encoder : sklearn.preprocessing._encoders.OneHotEncoder, Trained
+        encoder : sklearn.preprocessing._encoders.OneHotEncoder, trained
             OneHotEncoder if training is True, otherwise returns the encoder
             passed in.
 
-        label_binarizer : sklearn.preprocessing._label.LabelBinarizer, Trained LabelBinarizer
-            if training is True, otherwise returns the binarizer passed in.
+        label_binarizer : sklearn.preprocessing._label.LabelBinarizer, trained
+            LabelBinarizer if training is True, otherwise returns the binarizer
+            passed in.
     """
     if label is not None:
         y = X[label]
@@ -78,7 +72,7 @@ def process_data(
     X_categorical = X[categorical_features].values
     X_continuous = X.drop(*[categorical_features], axis=1)
 
-    if training is True:
+    if training:
         encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
         label_binarizer = LabelBinarizer()
         X_categorical = encoder.fit_transform(X_categorical)
@@ -87,7 +81,7 @@ def process_data(
         X_categorical = encoder.transform(X_categorical)
         try:
             y = label_binarizer.transform(y.values).ravel()
-        # Catch the case where y is None because we're doing inference.
+        # Handle y is None case because we're doing inference.
         except AttributeError:
             pass
 
