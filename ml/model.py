@@ -19,9 +19,27 @@ def train_model(
     Returns:
         model: trained random forest classifier.
     """
-    classifier = RandomForestClassifier()
+    classifier = RandomForestClassifier(n_estimators=20)
     classifier.fit(X_train, y_train)
     return classifier
+
+
+def infer(
+    model: RandomForestClassifier,
+    X: np.ndarray,
+) -> np.ndarray:
+    """
+    Run model inferences and return inferred labels.
+
+    Inputs:
+        model: RandomForestClassifier, trained machine learning model.
+        X : np.ndarray, data used for inference.
+
+    Returns:
+        inferred_labels: np.ndarray, labels inferred from the model.
+    """
+    inferred_labels = model.predict(X)
+    return inferred_labels
 
 
 def compute_model_metrics(
@@ -33,8 +51,8 @@ def compute_model_metrics(
     F1.
 
     Inputs:
-        y : np.array, Known labels, binarized.
-        preds : np.array, Predicted labels, binarized.
+        y : np.array, known labels, binarized.
+        preds : np.array, predicted labels, binarized.
 
     Returns:
         precision : float
@@ -45,20 +63,3 @@ def compute_model_metrics(
     precision = precision_score(y, preds, zero_division=1)
     recall = recall_score(y, preds, zero_division=1)
     return precision, recall, fbeta
-
-
-def infer(
-    model,
-    X: np.ndarray,
-):
-    """
-    Run model inferences and return the predictions.
-
-    Inputs:
-        model : ???, Trained machine learning model.
-        X : np.ndarray, Data used for prediction.
-
-    Returns:
-        preds : np.ndarray, predictions from the model.
-    """
-    pass

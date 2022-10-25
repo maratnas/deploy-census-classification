@@ -8,10 +8,11 @@ import pickle
 from re import M
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 from ml.data import CATEGORICAL_FEATURES, process_data
-from ml.model import train_model # , compute_model_metrics, infer
+from ml.model import train_model, infer, compute_model_metrics
 
 
 LABEL = "salary"
@@ -21,7 +22,7 @@ MODEL_FILE_PATH = r"./models/model.pkl"
 
 def main() -> None:
     # Load data from file.
-    data_frame = pd.read_csv(DATA_FILE_PATH)
+    data_frame: pd.DataFrame = pd.read_csv(DATA_FILE_PATH)
 
     data_frame_train, data_frame_test = train_test_split(
         data_frame,
@@ -45,17 +46,23 @@ def main() -> None:
     )
 
     # Train model.
-    model = train_model(X_train, y_train)
+    model: RandomForestClassifier = train_model(X_train, y_train)
 
     # Save model.
     with open(MODEL_FILE_PATH, 'wb') as fout:
         pickle.dump(model, fout)
 
+    # Evaluate on test set.
+    with open(MODEL_FILE_PATH, 'rb') as fin:
+        model = pickle.load(fin)
+    inferred_labels = infer(model, X_test)
+    precision, recall, fbeta = compute_model_metrics(
+        y_test, inferred_labels)
+    print("\nprecision:", precision)
+    print("recall:", recall)
+    print("fbeta:", fbeta)
+    print()
+
 
 if __name__ == "__main__":
     main()
-
-    # TODO: Move or remove this.
-    with open(MODEL_FILE_PATH, 'rb') as fin:
-        model = pickle.load(fin)
-        pass
