@@ -26,7 +26,7 @@ def process_data(
     label: Optional[str] = None,
     training: bool = True,
     encoder: Optional[OneHotEncoder] = None,
-    lb: Optional[LabelBinarizer]=None,
+    label_binarizer: Optional[LabelBinarizer]=None,
 ):
     """
     Process the data used in the machine learning pipeline.
@@ -53,7 +53,7 @@ def process_data(
         encoder: sklearn.preprocessing._encoders.OneHotEncoder, Trained sklearn
             OneHotEncoder, only used if training=False.
 
-        lb: sklearn.preprocessing._label.LabelBinarizer, Trained sklearn
+        label_binarizer: sklearn.preprocessing._label.LabelBinarizer, Trained sklearn
             LabelBinarizer, only used if training=False.
 
     Returns:
@@ -66,7 +66,7 @@ def process_data(
             OneHotEncoder if training is True, otherwise returns the encoder
             passed in.
 
-        lb : sklearn.preprocessing._label.LabelBinarizer, Trained LabelBinarizer
+        label_binarizer : sklearn.preprocessing._label.LabelBinarizer, Trained LabelBinarizer
             if training is True, otherwise returns the binarizer passed in.
     """
     if label is not None:
@@ -80,16 +80,16 @@ def process_data(
 
     if training is True:
         encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
-        lb = LabelBinarizer()
+        label_binarizer = LabelBinarizer()
         X_categorical = encoder.fit_transform(X_categorical)
-        y = lb.fit_transform(y.values).ravel()
+        y = label_binarizer.fit_transform(y.values).ravel()
     else:
         X_categorical = encoder.transform(X_categorical)
         try:
-            y = lb.transform(y.values).ravel()
+            y = label_binarizer.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
         except AttributeError:
             pass
 
     X = np.concatenate([X_continuous, X_categorical], axis=1)
-    return X, y, encoder, lb
+    return X, y, encoder, label_binarizer

@@ -5,7 +5,7 @@ Load data, train a machine learning model, and save the model to disk.
 
 import pickle
 
-from re import M
+# from re import M
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -16,7 +16,7 @@ from ml.model import train_model, infer, compute_model_metrics
 
 
 LABEL = "salary"
-DATA_FILE_PATH = r"./data/census-cooked.csv"
+DATA_FILE_PATH = r"./data/census-clean.csv"
 MODEL_FILE_PATH = r"./models/model.pkl"
 
 
@@ -29,7 +29,7 @@ def main() -> None:
         test_size=0.20,
     )
 
-    X_train, y_train, encoder, lb = process_data(
+    X_train, y_train, encoder, label_binarizer = process_data(
         X=data_frame_train,
         categorical_features=CATEGORICAL_FEATURES,
         label="salary",
@@ -42,15 +42,19 @@ def main() -> None:
         label="salary",
         training=False,
         encoder=encoder,
-        lb=lb,
+        label_binarizer=label_binarizer,
     )
 
     # Train model.
     model: RandomForestClassifier = train_model(X_train, y_train)
 
     # Save model.
+    # TODO: Save also `encoder` and `label_binarizer`.
     with open(MODEL_FILE_PATH, 'wb') as fout:
         pickle.dump(model, fout)
+
+
+
 
     # Evaluate on test set.
     with open(MODEL_FILE_PATH, 'rb') as fin:
