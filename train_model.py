@@ -55,7 +55,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-    # TODO: Remove this when model placeholder is replaced.
+    # TODO: Move or remove this.
     with open(MODEL_FILE_PATH, 'rb') as fin:
         model = pickle.load(fin)
-        print("model =", model)
+        pass
