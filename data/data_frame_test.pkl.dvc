@@ -1,0 +1,4 @@
+outs:
+- md5: e3cdddb97718ad6807151c8a5a476507
+  size: 484781
+  path: data_frame_test.pkl
