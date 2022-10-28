@@ -1,14 +1,16 @@
-from os import path
+#!/usr/bin/env python
 
 import argparse
 import importlib
 import inspect
 import os
+from os import path
 import sys
 
 FAIL_COLOR = '\033[91m'
 OK_COLOR = '\033[92m'
 WARN_COLOR = '\033[93m'
+
 
 def run_sanity_check(test_dir):
     #assert path.isdir(test_dir), FAIL_COLOR+f"No direcotry named {test_dir} found in {os.getcwd()}"
@@ -65,7 +67,6 @@ def run_sanity_check(test_dir):
             print(FAIL_COLOR+"Your test case for GET() does not seem to be testing the CONTENTS of the response.\n")
 
 
-
     ## POST()
     TEST_FOR_POST_METHOD_RESPONSE_CODE = False
     TEST_FOR_POST_METHOD_RESPONSE_BODY = False
@@ -110,7 +111,6 @@ def run_sanity_check(test_dir):
             print(FAIL_COLOR+"You do not seem to have TWO separate test cases, one for each possible inference that your model can make.")
 
 
-
     SANITY_TEST_PASSING = SANITY_TEST_PASSING and \
         TEST_FOR_GET_METHOD_RESPONSE_CODE and \
         TEST_FOR_GET_METHOD_RESPONSE_BODY and \
@@ -123,7 +123,6 @@ def run_sanity_check(test_dir):
 
     print(WARN_COLOR+"This is a heuristic based sanity testing and cannot guarantee the correctness of your code.")
     print(WARN_COLOR+"You should still check your work against the rubric to ensure you meet the criteria.")
-
 
 
 if __name__ == "__main__":
