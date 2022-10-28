@@ -24,7 +24,7 @@ def train_model(
     """
     Fit a random forest classifier.
 
-    Inputs:
+    Args:
         X_train: np.array, training data.
         y_train: np.array, labels.
 
@@ -43,7 +43,7 @@ def infer(
     """
     Run model inferences and return inferred labels.
 
-    Inputs:
+    Args:
         model: RandomForestClassifier, trained machine learning model.
         X: np.ndarray, data for inference.
 

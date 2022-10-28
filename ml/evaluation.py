@@ -15,7 +15,7 @@ def compute_model_metrics(
     Validates the trained machine learning model using precision, recall, and
     F1.
 
-    Inputs:
+    Args:
         y_reference: np.array, binarized low-noise reference labels treated as
             truth for validation or testing.
         y_inferred: np.array, binarized labels inferred by model.
