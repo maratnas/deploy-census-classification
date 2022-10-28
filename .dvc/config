@@ -1,5 +1,7 @@
 [core]
-    remote = local
+    remote = s3-store
     autostage = true
 ['remote "local"']
     url = /tmp/dvc-store
+['remote "s3-store"']
+    url = s3://census-classification-0

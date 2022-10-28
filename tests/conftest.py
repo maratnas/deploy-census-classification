@@ -22,5 +22,3 @@ def augmented_model() -> AugmentedModel:
     with open(MODEL_FILE_PATH, 'rb') as fin:
         model = pickle.load(fin)
     return model
-
-
