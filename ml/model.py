@@ -1,8 +1,22 @@
+"""
+Types and functions for training, evaluating, and using models.
+"""
+from collections import namedtuple
 from typing import Tuple
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+
+
+AugmentedModel = namedtuple(
+    "AugmentedModel",
+    "model input_encoder label_binarizer",
+)
+"""
+Container for a model together with corresponding input encoder and label
+binarizer.
+"""
 
 
 def train_model(

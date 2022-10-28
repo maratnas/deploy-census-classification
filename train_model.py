@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_training, process_data_for_inference
-from ml.model import train_model, infer, compute_model_metrics
+from ml.model import AugmentedModel, train_model, infer, compute_model_metrics
 
 
 DATA_FILE_PATH = r"./data/census-clean.csv"
@@ -55,22 +55,23 @@ def main() -> None:
 
     # Train model.
     model: RandomForestClassifier = train_model(X_train, y_train)
+    augmented_model = AugmentedModel(model, input_encoder, label_binarizer)
 
-    # Save model.
-    # TODO: Save also `encoder` and `label_binarizer`?
+    # Save augmented model.
     with open(MODEL_FILE_PATH, 'wb') as fout:
-        pickle.dump(model, fout)
+        pickle.dump(augmented_model, fout)
 
-    # Evaluate on test set.
+    # Load saved augmented model and evaluate on test set.
     with open(MODEL_FILE_PATH, 'rb') as fin:
-        model = pickle.load(fin)
-    inferred_labels = infer(model, X_test)
+        augmented_model = pickle.load(fin)
+    y_inferred = infer(augmented_model.model, X_test)
     precision, recall, fbeta = compute_model_metrics(
-        y_test, inferred_labels)
-    print("\nprecision:", precision)
-    print("recall:", recall)
-    print("fbeta:", fbeta)
-    print()
+        y_test,
+        y_inferred,
+    )
+    print(f"\nprecision: {precision}")
+    print(f"recall: {recall}")
+    print(f"fbeta: {fbeta}\n")
 
 
 if __name__ == "__main__":
