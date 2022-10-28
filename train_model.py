@@ -2,7 +2,6 @@
 """
 Load data, train a machine learning model, and save the model to disk.
 """
-
 import pickle
 
 # from re import M
@@ -10,8 +9,9 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
-from ml.data import process_data
+from ml.data import process_data_for_training, process_data_for_inference
 from ml.model import train_model, infer, compute_model_metrics
 
 
@@ -31,7 +31,6 @@ CATEGORICAL_FEATURES = [
 
 
 def main() -> None:
-    # Load data from file.
     data_frame: pd.DataFrame = pd.read_csv(DATA_FILE_PATH)
 
     data_frame_train, data_frame_test = train_test_split(
@@ -39,20 +38,19 @@ def main() -> None:
         test_size=0.20,
     )
 
-    X_train, y_train, encoder, label_binarizer = process_data(
-        X=data_frame_train,
+    X_train, y_train, input_encoder, label_binarizer = \
+    process_data_for_training(
+        data_frame=data_frame_train,
         categorical_features=CATEGORICAL_FEATURES,
-        label="salary",
-        training=True,
+        label=LABEL,
     )
 
-    X_test, y_test, *_ = process_data(
-        X=data_frame_test,
+    X_test, y_test = process_data_for_inference(
+        data_frame=data_frame_test,
         categorical_features=CATEGORICAL_FEATURES,
-        label="salary",
-        training=False,
-        encoder=encoder,
+        input_encoder=input_encoder,
         label_binarizer=label_binarizer,
+        label=LABEL,
     )
 
     # Train model.
@@ -62,9 +60,6 @@ def main() -> None:
     # TODO: Save also `encoder` and `label_binarizer`?
     with open(MODEL_FILE_PATH, 'wb') as fout:
         pickle.dump(model, fout)
-
-
-
 
     # Evaluate on test set.
     with open(MODEL_FILE_PATH, 'rb') as fin:
