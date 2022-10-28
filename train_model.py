@@ -12,10 +12,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_training, process_data_for_inference
-from ml.model import AugmentedModel, train_model, infer, compute_model_metrics
+from ml.model import AugmentedModel, train_model, infer
+from ml.evaluation import compute_model_metrics
 
 
 DATA_FILE_PATH = r"./data/census-clean.csv"
+DATA_FRAME_TEST_FILE_PATH = r"./data/data_frame_test.pkl"
 MODEL_FILE_PATH = r"./models/model.pkl"
 LABEL = "salary"
 CATEGORICAL_FEATURES = [
@@ -37,6 +39,10 @@ def main() -> None:
         data_frame,
         test_size=0.20,
     )
+
+    # Save test data frame for use later by automated tests.
+    with open(DATA_FRAME_TEST_FILE_PATH, 'wb') as fout:
+        pickle.dump(data_frame_test, fout)
 
     X_train, y_train, input_encoder, label_binarizer = \
     process_data_for_training(

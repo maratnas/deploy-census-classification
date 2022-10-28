@@ -1,12 +1,10 @@
 """
-Types and functions for training, evaluating, and using models.
+Types and functions for training and using a model.
 """
 from collections import namedtuple
-from typing import Tuple
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import fbeta_score, precision_score, recall_score
 
 
 AugmentedModel = namedtuple(
@@ -54,27 +52,3 @@ def infer(
     """
     y_inferred = model.predict(X)
     return y_inferred
-
-
-def compute_model_metrics(
-    y_reference: np.ndarray,
-    y_inferred: np.ndarray,
-) -> Tuple[float, float, float]:
-    """
-    Validates the trained machine learning model using precision, recall, and
-    F1.
-
-    Inputs:
-        y_reference: np.array, binarized low-noise reference labels treated as
-            truth for validation or testing.
-        y_inferred: np.array, binarized labels inferred by model.
-
-    Returns:
-        precision: float
-        recall: float
-        fbeta: float
-    """
-    fbeta = fbeta_score(y_reference, y_inferred, beta=1, zero_division=1)
-    precision = precision_score(y_reference, y_inferred, zero_division=1)
-    recall = recall_score(y_reference, y_inferred, zero_division=1)
-    return precision, recall, fbeta
