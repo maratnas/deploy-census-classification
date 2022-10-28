@@ -13,8 +13,8 @@ def train_model(
     Fit a random forest classifier.
 
     Inputs:
-        X_train : np.array, training data.
-        y_train : np.array, labels.
+        X_train: np.array, training data.
+        y_train: np.array, labels.
 
     Returns:
         model: trained random forest classifier.
@@ -33,33 +33,34 @@ def infer(
 
     Inputs:
         model: RandomForestClassifier, trained machine learning model.
-        X : np.ndarray, data used for inference.
+        X: np.ndarray, data for inference.
 
     Returns:
-        inferred_labels: np.ndarray, labels inferred from the model.
+        y_inferred: np.ndarray, labels inferred from the model.
     """
-    inferred_labels = model.predict(X)
-    return inferred_labels
+    y_inferred = model.predict(X)
+    return y_inferred
 
 
 def compute_model_metrics(
-    y: np.ndarray,
-    preds: np.ndarray,
+    y_reference: np.ndarray,
+    y_inferred: np.ndarray,
 ) -> Tuple[float, float, float]:
     """
     Validates the trained machine learning model using precision, recall, and
     F1.
 
     Inputs:
-        y : np.array, known labels, binarized.
-        preds : np.array, predicted labels, binarized.
+        y_reference: np.array, binarized low-noise reference labels treated as
+            truth for validation or testing.
+        y_inferred: np.array, binarized labels inferred by model.
 
     Returns:
-        precision : float
-        recall : float
-        fbeta : float
+        precision: float
+        recall: float
+        fbeta: float
     """
-    fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
-    precision = precision_score(y, preds, zero_division=1)
-    recall = recall_score(y, preds, zero_division=1)
+    fbeta = fbeta_score(y_reference, y_inferred, beta=1, zero_division=1)
+    precision = precision_score(y_reference, y_inferred, zero_division=1)
+    recall = recall_score(y_reference, y_inferred, zero_division=1)
     return precision, recall, fbeta
