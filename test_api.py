@@ -50,12 +50,14 @@ data = CensusFeatures.Config.schema_extra["example"]
 
 
 def test_get():
+    """Confirm a greeting is returned."""
     url = base_url
     response = requests.get(url)
     print(f"GET response:\n{response.json()}")
 
 
 def test_post():
+    """Confirm inferred classes are correctly returned."""
     # TODO: Add cases for both model output classes.
     url = base_url + "salary_class_inference/"
     response = requests.post(url, data=json.dumps(data))
@@ -63,10 +65,16 @@ def test_post():
 
 
 def main():
+    """Run tests."""
     print()
     test_get()
+
     print()
     test_post()
+
+    print()
+    test_post()
+
     print()
 
 
