@@ -2,6 +2,9 @@
 """
 Test the salary classification API.
 
+This is not a pytest, so pytest is configured to ignore this file in
+`./pytest.ini`.
+
 Usage:
 $ ./test_api.py  # Test API deployed to Heroku.
 $ ./test_api.py  --l  # Test API locally.
@@ -22,9 +25,9 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-l', '--local', action='store_true')
 args = parser.parse_args()
 if args.local:
-    url = "http://127.0.0.1:8000/salary_class_inference/"
+    base_url = "http://127.0.0.1:8000/"
 else:
-    url = "https://census-classification-a4a401cd.herokuapp.com/salary_class_inference/"
+    base_url = "https://census-classification-a4a401cd.herokuapp.com/"
 
 # Load example.
 data = CensusFeatures.Config.schema_extra["example"]
@@ -45,6 +48,27 @@ data = CensusFeatures.Config.schema_extra["example"]
 #     "native_country": "United-States",
 # }
 
-response = requests.post(url, data=json.dumps(data))
 
-print(response.json())
+def test_get():
+    url = base_url
+    response = requests.get(url)
+    print(f"GET response:\n{response.json()}")
+
+
+def test_post():
+    # TODO: Add cases for both model output classes.
+    url = base_url + "salary_class_inference/"
+    response = requests.post(url, data=json.dumps(data))
+    print(f"PUT response:\n{response.json()}")
+
+
+def main():
+    print()
+    test_get()
+    print()
+    test_post()
+    print()
+
+
+if __name__ == "__main__":
+    main()
