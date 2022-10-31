@@ -18,8 +18,10 @@ from train_model import LABEL, CATEGORICAL_FEATURES, MODEL_FILE_PATH
 # Set up DVC on Heroku.
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    # if os.system(f"dvc pull") != 0:  # More expensive than necessary.
-    if os.system(f"dvc pull {MODEL_FILE_PATH}") != 0:  # Saves time.
+    # I tried to save time by pulling only the DVC file necessary for inference,
+    # but for unclear reasons, this does not seem to work.
+    # if os.system(f"dvc pull {MODEL_FILE_PATH}") != 0:
+    if os.system(f"dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
 
