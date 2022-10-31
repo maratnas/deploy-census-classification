@@ -18,9 +18,6 @@ from train_model import LABEL, CATEGORICAL_FEATURES, MODEL_FILE_PATH
 # Set up DVC on Heroku.
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    # I tried to save time by pulling only the DVC file necessary for inference,
-    # but for unclear reasons, this does not seem to work.
-    # if os.system(f"dvc pull {MODEL_FILE_PATH}") != 0:
     if os.system(f"dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
@@ -30,7 +27,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 # Metadata fields: https://fastapi.tiangolo.com/tutorial/metadata/
 app = FastAPI(
     title="Salary Classifier API",
-    description="API for querying an ML model that predicts salary classes.",
+    description="API for querying an ML model that predicts salary classes from census features.",
     version="1.0.0-alpha",
 )
 
