@@ -66,5 +66,5 @@ def test_model_performance(augmented_model, data_processed_for_inference):
         y_inferred,
     )
     assert precision >= 0.70
-    assert recall >= 0.60
+    assert recall >= 0.55
     assert fbeta >= 0.65
