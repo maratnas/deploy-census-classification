@@ -30,7 +30,7 @@ if args.local:
 else:
     base_url = "https://census-classification-a4a401cd.herokuapp.com/"
 
-# Load example.
+# Example features.
 #data = CensusFeatures.Config.schema_extra["example"]
 example_low_salary = {
     "age": 16,
@@ -77,10 +77,27 @@ def test_get():
     )
 
 
-def test_post(example: Dict[str, Any]):
-    """Confirm inferred classes are correctly returned."""
+def test_post_low_salary(example_low_salary: Dict[str, Any]):
+    """Confirm low salary class is correctly returned."""
     url = base_url + "salary_class_inference/"
-    response = requests.post(url, data=json.dumps(example))
+    response = requests.post(url, data=json.dumps(example_low_salary))
+    response_json = response.json()
+    assert response_json["inferred_salary_class"] == "<=50K"
+    assert response.status_code == 200
+    print(
+        "PUT\n"
+        f"response: {response.json()}\n"
+        f"status_code: {response.status_code}\n"
+    )
+
+
+def test_post_high_salary(example_high_salary: Dict[str, Any]):
+    """Confirm high salary class is correctly returned."""
+    url = base_url + "salary_class_inference/"
+    response = requests.post(url, data=json.dumps(example_high_salary))
+    response_json = response.json()
+    assert response_json["inferred_salary_class"] == ">50K"
+    assert response.status_code == 200
     print(
         "PUT\n"
         f"response: {response.json()}\n"
@@ -94,10 +111,10 @@ def main():
     test_get()
 
     print()
-    test_post(example_low_salary)
+    test_post_low_salary(example_low_salary)
 
     print()
-    test_post(example_high_salary)
+    test_post_high_salary(example_high_salary)
 
     print()
 
