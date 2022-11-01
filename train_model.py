@@ -66,7 +66,7 @@ def main() -> None:
     )
     print(f"\nprecision: {precision}")
     print(f"recall: {recall}")
-    print(f"F{beta%1}: {fbeta}\n")
+    print(f"F{beta}: {fbeta}\n")
 
 
 if __name__ == "__main__":
