@@ -12,8 +12,9 @@ from sklearn.ensemble import RandomForestClassifier
 
 from census_features import CensusFeatures
 from ml.data import process_data_for_inference
-from ml.model import AugmentedModel, infer as infer_
-from train_model import LABEL, CATEGORICAL_FEATURES, MODEL_FILE_PATH
+from ml.model import AugmentedModel, infer as infer_, \
+    LABEL, CATEGORICAL_FEATURES
+from train_model import MODEL_FILE_PATH
 
 
 # Set up DVC on Heroku.

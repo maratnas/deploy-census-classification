@@ -7,6 +7,19 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
+LABEL = "salary"
+CATEGORICAL_FEATURES = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country",
+]
+
+
 AugmentedModel = namedtuple(
     "AugmentedModel",
     "model input_encoder label_binarizer",

@@ -8,10 +8,8 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 from ml.data import process_data_for_training, process_data_for_inference
-from ml.model import train_model, infer
+from ml.model import train_model, infer, LABEL, CATEGORICAL_FEATURES
 from ml.evaluation import compute_model_metrics
-
-from train_model import LABEL, CATEGORICAL_FEATURES
 
 
 @pytest.fixture
@@ -49,22 +47,24 @@ def test_infer(augmented_model, data_processed_for_inference):
 def test_compute_model_metrics(augmented_model, data_processed_for_inference):
     X_test, y_test = data_processed_for_inference
     y_inferred = infer(augmented_model.model, X_test)
-    precision, recall, fbeta = compute_model_metrics(
+    precision, recall, fbeta, beta = compute_model_metrics(
         y_test,
         y_inferred,
     )
     assert isinstance(precision, float)
     assert isinstance(recall, float)
     assert isinstance(fbeta, float)
+    assert isinstance(beta, float)
 
 
 def test_model_performance(augmented_model, data_processed_for_inference):
     X_test, y_test = data_processed_for_inference
     y_inferred = infer(augmented_model.model, X_test)
-    precision, recall, fbeta = compute_model_metrics(
+    precision, recall, fbeta, beta = compute_model_metrics(
         y_test,
         y_inferred,
     )
     assert precision >= 0.70
     assert recall >= 0.55
     assert fbeta >= 0.65
+    assert beta == 1.0

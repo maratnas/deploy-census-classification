@@ -8,7 +8,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_training, process_data_for_inference
-from train_model import LABEL, CATEGORICAL_FEATURES
+from ml.model import LABEL, CATEGORICAL_FEATURES
 
 
 def test_process_data_for_training(data_frame_test):

@@ -4,7 +4,6 @@ Load data, train a machine learning model, and save the model to disk.
 """
 import pickle
 
-# from re import M
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -12,24 +11,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_training, process_data_for_inference
-from ml.model import AugmentedModel, train_model, infer
+from ml.model import AugmentedModel, train_model, infer, \
+    LABEL, CATEGORICAL_FEATURES
 from ml.evaluation import compute_model_metrics
 
 
 DATA_FILE_PATH = r"./data/census-clean.csv"
 DATA_FRAME_TEST_FILE_PATH = r"./data/data_frame_test.pkl"
 MODEL_FILE_PATH = r"./models/model.pkl"
-LABEL = "salary"
-CATEGORICAL_FEATURES = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-]
 
 
 def main() -> None:
@@ -71,13 +60,13 @@ def main() -> None:
     with open(MODEL_FILE_PATH, 'rb') as fin:
         augmented_model = pickle.load(fin)
     y_inferred = infer(augmented_model.model, X_test)
-    precision, recall, fbeta = compute_model_metrics(
+    precision, recall, fbeta, beta = compute_model_metrics(
         y_test,
         y_inferred,
     )
     print(f"\nprecision: {precision}")
     print(f"recall: {recall}")
-    print(f"fbeta: {fbeta}\n")
+    print(f"F{beta%1}: {fbeta}\n")
 
 
 if __name__ == "__main__":
