@@ -29,7 +29,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 # Metadata fields: https://fastapi.tiangolo.com/tutorial/metadata/
 app = FastAPI(
     title="Salary Classifier API",
-    description="API for querying an ML model that predicts salary classes from census features.",
+    description="API for querying an ML model that infers salary classes from census features.",
     version="1.0.0-alpha",
 )
 
