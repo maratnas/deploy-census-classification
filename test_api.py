@@ -85,7 +85,7 @@ def test_post_low_salary(example_low_salary: Dict[str, Any]):
     assert response_json["inferred_salary_class"] == "<=50K"
     assert response.status_code == 200
     print(
-        "PUT\n"
+        "POST\n"
         f"response: {response.json()}\n"
         f"status_code: {response.status_code}\n"
     )
@@ -99,7 +99,7 @@ def test_post_high_salary(example_high_salary: Dict[str, Any]):
     assert response_json["inferred_salary_class"] == ">50K"
     assert response.status_code == 200
     print(
-        "PUT\n"
+        "POST\n"
         f"response: {response.json()}\n"
         f"status_code: {response.status_code}\n"
     )
