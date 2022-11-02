@@ -2,6 +2,7 @@
 Types and functions for training and using a model.
 """
 from collections import namedtuple
+import pickle
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -28,6 +29,22 @@ AugmentedModel = namedtuple(
 Container for a model together with corresponding input encoder and label
 binarizer.
 """
+
+
+def save_model(
+    augmented_model: AugmentedModel,
+    path: str = r"./models/model.pkl",
+):
+    """Save augmented model to disk as pickle file."""
+    with open(path, 'wb') as fout:
+        pickle.dump(augmented_model, fout)
+
+
+def load_model(path: str = r"./models/model.pkl") -> AugmentedModel:
+    """Load augmented model from pickle file."""
+    with open(path, 'rb') as fin:
+        augmented_model = pickle.load(fin)
+    return augmented_model
 
 
 def train_model(

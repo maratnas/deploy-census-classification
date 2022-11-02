@@ -12,13 +12,12 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_training, process_data_for_inference
 from ml.model import AugmentedModel, train_model, infer, \
-    LABEL, CATEGORICAL_FEATURES
+    save_model, load_model, LABEL, CATEGORICAL_FEATURES
 from ml.evaluation import compute_model_metrics
 
 
 DATA_FILE_PATH = r"./data/census-clean.csv"
 DATA_FRAME_TEST_FILE_PATH = r"./data/data_frame_test.pkl"
-MODEL_FILE_PATH = r"./models/model.pkl"
 
 
 def main() -> None:
@@ -53,12 +52,10 @@ def main() -> None:
     augmented_model = AugmentedModel(model, input_encoder, label_binarizer)
 
     # Save augmented model.
-    with open(MODEL_FILE_PATH, 'wb') as fout:
-        pickle.dump(augmented_model, fout)
+    save_model(augmented_model)
 
     # Load saved augmented model and evaluate on test set.
-    with open(MODEL_FILE_PATH, 'rb') as fin:
-        augmented_model = pickle.load(fin)
+    augmented_model = load_model()
     y_inferred = infer(augmented_model.model, X_test)
     precision, recall, fbeta, beta = compute_model_metrics(
         y_test,

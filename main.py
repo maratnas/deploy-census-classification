@@ -13,8 +13,7 @@ from sklearn.ensemble import RandomForestClassifier
 from census_features import CensusFeatures
 from ml.data import process_data_for_inference
 from ml.model import AugmentedModel, infer as infer_, \
-    LABEL, CATEGORICAL_FEATURES
-from train_model import MODEL_FILE_PATH
+    load_model as load_model_, LABEL, CATEGORICAL_FEATURES
 
 
 # Set up DVC on Heroku.
@@ -38,8 +37,7 @@ startup_items: Dict[str, Any] = {}
 @app.on_event("startup") # => no responses until model has finished loading.
 async def load_model():
     """Load model once on app startup, not every query."""
-    with open(MODEL_FILE_PATH, 'rb') as fin:
-        startup_items["augmented_model"] = pickle.load(fin)
+    startup_items["augmented_model"] = load_model_()
 
 
 @app.get("/")

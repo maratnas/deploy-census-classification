@@ -12,12 +12,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 from ml.data import process_data_for_inference
-from ml.model import AugmentedModel, infer, \
+from ml.model import AugmentedModel, infer, load_model, \
     LABEL, CATEGORICAL_FEATURES
 from ml.evaluation import compute_model_metrics_for_all_slices_of_a_feature, \
     ModelMetrics
-from train_model import DATA_FRAME_TEST_FILE_PATH, \
-    DATA_FILE_PATH, MODEL_FILE_PATH
+from train_model import DATA_FRAME_TEST_FILE_PATH, DATA_FILE_PATH
 
 
 SLICE_METRICS_FILE_PATH = "slice_output.txt"
@@ -26,8 +25,7 @@ FEATURE = "sex"
 
 def main() -> None:
     # Load saved augmented model.
-    with open(MODEL_FILE_PATH, 'rb') as fin:
-        augmented_model = pickle.load(fin)
+    augmented_model = load_model()
 
     # Load test data frame.
     with open(DATA_FRAME_TEST_FILE_PATH, 'rb') as fin:
