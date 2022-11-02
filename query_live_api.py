@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """
-Test the salary classification API.
+Manual test of the salary classification API.
 
-This is not a pytest, so pytest is configured to ignore this file in
-`./pytest.ini`.
+For this script to work with `--local`, make sure to start the server.
+$ uvicorn main:app --reload
 
 Usage:
-$ ./test_api.py  # Test API deployed to Heroku.
-$ ./test_api.py  --l  # Test API locally.
-$ ./test_api.py  --local  # Test API locally.
+$ ./query_live_api.py  # Test API deployed to Heroku.
+$ ./query_live_api.py  -l  # Test API locally.
+$ ./query_live_api.py  --local  # Test API locally.
 """
 import argparse
 import json
@@ -29,6 +29,7 @@ if args.local:
     base_url = "http://127.0.0.1:8000/"
 else:
     base_url = "https://census-classification-a4a401cd.herokuapp.com/"
+
 
 # Example features.
 #data = CensusFeatures.Config.schema_extra["example"]
