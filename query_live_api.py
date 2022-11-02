@@ -83,8 +83,8 @@ def test_post_low_salary(example_low_salary: Dict[str, Any]):
     url = base_url + "salary_class_inference/"
     response = requests.post(url, data=json.dumps(example_low_salary))
     response_json = response.json()
-    assert response_json["inferred_salary_class"] == "<=50K"
     assert response.status_code == 200
+    assert response_json["inferred_salary_class"] == "<=50K"
     print(
         "POST\n"
         f"response: {response.json()}\n"
@@ -97,8 +97,8 @@ def test_post_high_salary(example_high_salary: Dict[str, Any]):
     url = base_url + "salary_class_inference/"
     response = requests.post(url, data=json.dumps(example_high_salary))
     response_json = response.json()
-    assert response_json["inferred_salary_class"] == ">50K"
     assert response.status_code == 200
+    assert response_json["inferred_salary_class"] == ">50K"
     print(
         "POST\n"
         f"response: {response.json()}\n"
