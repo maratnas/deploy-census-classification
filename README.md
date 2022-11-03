@@ -83,18 +83,171 @@ responses.
 `slice_output.txt`: Example output of ML model performance on slices.
 
 
-## Creating the Pipeline
+## Setting up the Pipeline
 
-This is a high-level outline of the steps I took to create this pipeline.
+This is a high-level outline of the main steps I took to set up this pipeline.
 
-1.
+* Create GitHub and Heroku accounts if you do not already have them.
 
-2.
+* Locally install conda, git, and dvc if not already present.
 
-3.
-.
-.
-.
+* Create and activate a conda environment for local development.
+
+```
+$ conda create -n deploy-census-classification "python=3.7" \
+    requests \
+    pytest \
+    flake8 \
+    numpy \
+    scipy \
+    matplotlib \
+    scikit-learn \
+    pandas \
+    pandas-profiling \
+    jupyter \
+    jupyterlab \
+    fastapi \
+    uvicorn \
+    dvc-s3 \
+    dvc-gdrive \
+    -c conda-forge
+$ conda activate deploy-census-classification
+```
+
+* Create, resp. fork the repo `deploy-census-classification` on GitHub.
+
+* Clone repo to local machine for development.
+```
+git clone git@github.com:maratnas/deploy-census-classification.git
+```
+
+* Add file `requirements.txt` that enclodes python dependencies so that GitHub
+and Heroku can use pip rather than conda because pip is much faster.
+
+* Set up a "Python Package/Application" pre-made GitHub Action in the repo.
+This should run pytest and flake8 on push, and require both to pass. Set the
+Python version to be the same as that used for development.
+
+* From Udacity ND menu, select "OPEN CLOUD GATEWAY". Credentials
+`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` appear, but ignore these. We
+will instead create an IAM user and use its credentials instead.
+
+* [Install AWS CLI
+  tool](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+  and confirm.
+```
+$ aws --version
+```
+
+* [Create s3
+bucket](https://s3.console.aws.amazon.com/s3/buckets?region=us-west-2) named
+`census-classification-0` with default options: Services -> Create Bucket.
+
+* [Create IAM
+user](<https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console>)
+named `census-classification-0-user`. Note the values of `AWS_ACCESS_KEY_ID` and
+`AWS_SECRET_ACCESS_KEY`. Users -> Add user Programmatic access. Attach Existing
+Policies Directly (don't create group). Search for and select
+  `AmazonS3FullAccess` to give S3 bucket access. Skip tags. Create user.
+Configure AWS CLI to use Access key ID and Secret Access key.
+```
+$ aws configure
+AWS Access Key ID [None]: ...
+AWS Secret Access Key [None]: ...
+Default region
+name [None]: us-west-2 Default output format [None]: json
+```
+
+* Initialize DVC
+```
+$ dvc init
+```
+
+* Add S3 DVC remote as default.
+```
+$ dvc remote add s3-store -d s3://census-classification-0
+$ git add .dvc/config
+$ git commit -m "Configure S3 DVC remote."
+```
+
+* [Connect S3 to GitHub
+Actions](https://knowledge.udacity.com/questions/669541). -[Add AWS
+credentials](https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions)
+and [DVC setup](https://github.com/iterative/setup-dvc) to Action.
+
+* Download and commit raw data from starter repo.
+```
+$ wget -P ./data/ \
+  <https://github.com/udacity/nd0821-c3-starter-code/raw/master/starter/data/census.csv>
+$ dvc add data/census.csv
+$ git add data/census.csv.dvc data/.gitignore
+$ git commit -m "Add raw data."
+```
+
+* Open `census.csv` with a text editor, remove all spaces, save result
+  as `census-clean.csv`, and add to DVC.
+```
+$ dvc add data/census-clean.csv
+$ git add data/census-clean.csv.dvc data/.gitignore
+$ git commit -m "Add cleaned data."
+```
+
+* Implement the ML functionality, train a model and serialize the model and a
+test data frame to `models/model.pkl` and `data/data_frame_test.pkl`,
+respectively.
+
+* Add serialized model and test dataset to DVC.
+```
+$ dvc add models/model.pkl
+$ git add models/model.pkl.dvc models/.gitignore
+$ git commit -m "Add model artifact."
+$ dvc add data/data_frame_test.pkl
+$ git add data/data_frame_test.pkl.dvc data/.gitignore
+$ git commit -m "Add a serialized test data frame."
+```
+
+* Push tracked data to S3 remote.
+```
+$ dvc push
+```
+
+* Implement API app.
+
+* Add IAM user credentials to [GitHub repo secrets](https://github.com/maratnas/deploy-census-classification/settings/secrets/actions).
+
+* Push to GitHub to see if triggered tests pass,
+```
+$ git push
+```
+
+* Create Heroku app named `census-classification-a4a401cd`.
+
+* Add `apt` to Heroku VM buildpack so that it can install DVC.
+```
+$ heroku buildpacks:add --index 1 heroku-community/apt --app census-classification-a4a401cd
+$ git push heroku main  # Create new release using the buildback.
+```
+
+* [Add `heroku/python` buildpack](https://dashboard.heroku.com/apps/census-classification-a4a401cd/settings).
+
+* Add `Procfile` for Heroku.
+``` Procfile
+web: uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+```
+
+* Add `Aptfile` for Heroku.
+``` Aptfile
+https://github.com/iterative/dvc/releases/download/2.10.2/dvc_2.10.2_amd64.deb
+```
+
+* [Set AWS credentials as "Config Vars" in
+  Heroku](https://dashboard.heroku.com/apps/census-classification-a4a401cd/settings).
+
+* Deploy app to Heroku using GitHub repo with CD enabled.
+  - Enable autodeploy contingent on CI passing.
+```
+$ git push
+```
 
 
 ## Rubric Points
