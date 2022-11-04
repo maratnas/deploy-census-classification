@@ -1,11 +1,12 @@
 _Metrics for all slices of feature "sex"_
 
 sex = Male
-  precision: 0.7234814143245694
-  recall: 0.621011673151751
-  F1.0: 0.6683417085427136
+  precision: 0.7223
+  recall: 0.6105
+  F1.0: 0.6617
 
 sex = Female
-  precision: 0.7065217391304348
-  recall: 0.5855855855855856
-  F1.0: 0.6403940886699507
+  precision: 0.7892
+  recall: 0.5391
+  F1.0: 0.6406
+

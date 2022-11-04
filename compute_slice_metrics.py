@@ -45,9 +45,9 @@ def main() -> None:
         fout.write(f"_Metrics for all slices of feature \"{FEATURE}\"_\n")
         for key, value in metrics.items():
             fout.write(f"\n{FEATURE} = {key}")
-            fout.write(f"\n  precision: {value.precision}")
-            fout.write(f"\n  recall: {value.recall}")
-            fout.write(f"\n  F{value.beta}: {value.fbeta}\n")
+            fout.write(f"\n  precision: {value.precision:.4}")
+            fout.write(f"\n  recall: {value.recall:.4}")
+            fout.write(f"\n  F{value.beta}: {value.fbeta:.4}\n")
         fout.write("\n")
 
 

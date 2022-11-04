@@ -61,9 +61,9 @@ def main() -> None:
         y_test,
         y_inferred,
     )
-    print(f"\nprecision: {precision}")
-    print(f"recall: {recall}")
-    print(f"F{beta}: {fbeta}\n")
+    print(f"\nprecision: {precision:.4}")
+    print(f"recall: {recall:.4}")
+    print(f"F{beta}: {fbeta:.4}\n")
 
 
 if __name__ == "__main__":

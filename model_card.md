@@ -57,9 +57,9 @@ above.
 
 ## Metrics
 
-Precision: 0.7306245297215952  
-Recall: 0.5997529339098209  
-F1: 0.658751696065129
+Precision: 0.7306  
+Recall: 0.5997  
+F1: 0.6587  
 
 
 ## Ethical Considerations
