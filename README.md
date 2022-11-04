@@ -53,7 +53,9 @@ https://github.com/udacity/nd0821-c3-starter-code/
 
 `main.py`: App that serves the API on Heroku.
 
-`census_features.py`: Defines `CensusFeatures` type for posting to the API.
+`census_features.py`: Defines `CensusFeatures` type, derived from
+  `pydantic.BaseModel`, for posting to the API. This is by the app to ingest
+  POSTs in the `infer` function of `main.py`.
 
 `compute_metrics.py`: Script for evaluating ML model performance on the full
 dataset.
@@ -280,11 +282,12 @@ $ git push
 * The model card `model_card.md` is complete.
 
 * A REST API is implemented with FastAPI in `main.py`.
-  -GET returns a greeting.
-  -POST returns an inferred salary class.
-  -Type hints are used.
-  -Uses Pydantic model `CensusFeatures` from `census_features.py`.
-  -Screenshot `screenshots/example.png` shows example `CensusFeatures` instance
+  - GET returns a greeting.
+  - POST returns an inferred salary class.
+  - Type hints are used.
+  - The `infer` function ingests POSTs with a Pydantic model `CensusFeatures`
+    derived from `pydantic.BaseModel` in `census_features.py`.
+  - Screenshot `screenshots/example.png` shows example `CensusFeatures` instance
   (in small text at the bottom).
 
 * The pytest `tests/test_api.py` locally tests the API responses of the cases of
